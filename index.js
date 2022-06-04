@@ -7,6 +7,8 @@ const expressValidator = require('express-validator');
 //Import Routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
+const categoryRoutes = require('./routes/categories');
+const productRoutes = require('./routes/products');
 
 
 
@@ -29,6 +31,8 @@ app.use(expressValidator())
 //Routes middleware
 app.use('/api' , authRoutes);
 app.use('/api' , userRoutes);
+app.use('/api/category' , categoryRoutes);
+app.use('/api/product' , productRoutes);
 
 
 
