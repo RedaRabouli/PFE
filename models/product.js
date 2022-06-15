@@ -20,10 +20,7 @@ const productSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
-    quantity: { 
-        type: Number
-
-    },
+  
     photo: {
         data: Buffer,
         contentType: String

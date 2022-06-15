@@ -29,8 +29,8 @@ app.use(cookieParser())
 app.use(expressValidator())
 
 //Routes middleware
-app.use('/api' , authRoutes);
-app.use('/api' , userRoutes);
+app.use('/api/user' , authRoutes,  userRoutes);
+// app.use('/api' , userRoutes);
 app.use('/api/category' , categoryRoutes);
 app.use('/api/product' , productRoutes);
 
