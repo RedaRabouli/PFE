@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const expressValidator = require('express-validator');
@@ -25,12 +26,13 @@ mongoose.connect(process.env.DATABASE)
 
 // Middlewares
 app.use(express.json())
+app.use(cors())
 app.use(cookieParser())
 app.use(expressValidator())
 
 //Routes middleware
-app.use('/api/user' , authRoutes,  userRoutes);
-// app.use('/api' , userRoutes);
+app.use('/api/user' , authRoutes);
+app.use('/api/user' , userRoutes);
 app.use('/api/category' , categoryRoutes);
 app.use('/api/product' , productRoutes);
 

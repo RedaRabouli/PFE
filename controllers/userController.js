@@ -18,8 +18,8 @@ exports.updateOneUser = (req, res) => {
         if(err){
             return res.status(400).json({err})
         }
-        req.profile.hashed_password = undefined
-        req.profile.salt = undefined
+        user.hashed_password = undefined
+        user.salt = undefined
         res.json({user})
     }
         

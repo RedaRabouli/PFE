@@ -6,9 +6,9 @@ const router = express.Router();
 
 
 
-router.get('/profile/:userId', requireSignIn , isAuth,  getOneUser)
+router.get('/:userId', requireSignIn , isAuth,  getOneUser)
 
-router.put('/profile/:userId', requireSignIn , isAuth,  updateOneUser)
+router.put('/:userId', requireSignIn , isAuth,  updateOneUser)
 
 router.param('userId',userById)
 
