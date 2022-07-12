@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema({
     description: {
         type: String,
         require: true,
-        maxlength:2500
+        maxlength:250000
 
     },
     price: {
@@ -29,7 +29,24 @@ const productSchema = new mongoose.Schema({
         type: ObjectId,
         ref: 'Category',
         require: true
-    }
+    },
+   Surface: {
+    type: String,
+    require: true
+   },
+   sellorrent:{
+    type: Boolean,
+    require: true
+   },
+   city: {
+    type: String,
+    require: true,
+    maxlength: 50,
+    trim: true
+
+   }
+   
+
      
 }, {timestamps: true});
 

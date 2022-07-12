@@ -34,7 +34,7 @@ const userSchema =  new mongoose.Schema({
 
 
     role:{
-        type: Array,
+        type: Number,
         default: 0 
     },
 

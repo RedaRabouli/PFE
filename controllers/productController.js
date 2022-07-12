@@ -38,10 +38,16 @@ exports.createProduct = (req, res) => {
     const schema = Joi.object({
       name: Joi.string().required(),
       description: Joi.string().required(),
-      price: Joi.required(),
-      category: Joi.required()
+      price: Joi.string().required(),
+      category: Joi.string().required(),
+      Surface: Joi.required(),
+      city: Joi.string().allow(),
+      sellorrent: Joi.required()
+
+      
+
      
-    })
+    }) 
 
     const{error} = schema.validate(fields);
 
@@ -128,7 +134,7 @@ exports.updateProduct = (req, res) => {
 
     if (files.photo) {
                
-          if(files.photo.size > Math.pow(10, 6 )){
+          if(files.photo.size > Math.pow(1000000, 1000000 )){
             return res.status(400).json({
               error: 'Image too big!'
             })
@@ -175,10 +181,20 @@ exports.allProducts = (req, res) => {
 
   let sortBy = req.query.sortBy ?  req.query.sortBy : '_id';
   let order = req.query.order ?  req.query.order : 'asc';
-  let limit = req.query.limit ?  req.query.limit : 100 ;
+  let limit = req.query.limit ?  parseInt(req.query.limit) : 100 ;
 
+  let query = {}
+  let{search, category} = req.query;
 
-   Product.find()
+  if(search){
+    query.name = {  $regex: search, $options: 'i'};
+      }
+
+  if(category) {
+     query.category = category
+  }
+
+   Product.find(query)
           .select("-photo")
           .populate('category')
           .sort([[sortBy, order]])
@@ -228,11 +244,12 @@ exports.allProducts = (req, res) => {
 
         let sortBy = req.query.sortBy ?  req.query.sortBy : '_id';
         let order = req.query.order ?  req.query.order : 'asc';
-        let limit = req.query.limit ?  req.query.limit : 100 ;
+        let limit = req.body.limit ?  req.body.limit : 100 ;
         let skip = parseInt(req.body.skip);
         let findArgs = {};
          
-            
+          console.log(req.body.filters)    
+
                  for(let key in req.body.filters) { 
                    if(req.body.filters[key].length > 0) {
                      if (key === "price"){
