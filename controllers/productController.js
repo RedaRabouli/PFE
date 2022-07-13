@@ -7,9 +7,10 @@ const formidable = require('formidable');
 const product = require('../models/product');
 
 exports.createProduct = (req, res) => {
-  const form = new formidable.IncomingForm();
-
-  form.keepExtensions = true;
+  const form = new formidable.IncomingForm({
+    multiples: true,
+    keepExtensions:true
+  });
 
   form.parse(req, (err, fields, files) => {
     if (err) {
@@ -20,19 +21,21 @@ exports.createProduct = (req, res) => {
 
     const product = new Product(fields);
 
-    if (files.photo) {
-               
-          if(files.photo.size > Math.pow(10, 6 )){
-            return res.status(400).json({
-              error: 'Image too big!'
-            })
-          }
-      
-      const photoBuffer = {
-        data: fs.readFileSync(files.photo.filepath),
-        contentType: files.photo.mimetype,
-      };
-      product.photo = photoBuffer;
+    if (files.photo && files.photo.length) {
+      const photoBuffers = [] 
+      for (const photo of files.photo) {
+        if(photo.size > Math.pow(10, 6 )){
+          return res.status(400).json({
+            error: 'One of the images is too big!'
+          })
+        }
+        const photoBuffer = {
+          data: fs.readFileSync(photo.filepath),
+          contentType: photo.mimetype,
+        };
+        photoBuffers.push(photoBuffer)
+      }
+      product.photo = photoBuffers;
     }
 
     const schema = Joi.object({
@@ -43,10 +46,6 @@ exports.createProduct = (req, res) => {
       Surface: Joi.required(),
       city: Joi.string().allow(),
       sellorrent: Joi.required()
-
-      
-
-     
     }) 
 
     const{error} = schema.validate(fields);

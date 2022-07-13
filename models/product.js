@@ -21,10 +21,12 @@ const productSchema = new mongoose.Schema({
         require: true
     },
   
-    photo: {
-        data: Buffer,
-        contentType: String
-    },
+    photo: [
+        {
+            data: Buffer,
+            contentType: String
+        }
+    ],
     category: {
         type: ObjectId,
         ref: 'Category',
