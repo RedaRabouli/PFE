@@ -13,7 +13,8 @@ const{
       removeProduct,
       updateProduct,
       searchProduct,
-      photoProduct
+      photoProduct,
+      photoProductCount
     } = require('../controllers/productController');
 
 const {requireSignIn, isAuth, isAdmin} = require('../middlewares/auth');
@@ -28,7 +29,8 @@ router.post('/create/:userId', [requireSignIn, isAuth, isAdmin], createProduct);
 
 router.post('/search', searchProduct);
 
-router.get('/photo/:productId', photoProduct);
+router.get('/photo/:productId', photoProductCount);
+router.get('/photo/:productId/:idx', photoProduct);
 
 router.put('/:productId/:userId', [requireSignIn, isAuth, isAdmin], updateProduct);
 

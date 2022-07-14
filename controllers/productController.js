@@ -24,11 +24,6 @@ exports.createProduct = (req, res) => {
     if (files.photo && files.photo.length) {
       const photoBuffers = [] 
       for (const photo of files.photo) {
-        if(photo.size > Math.pow(10, 6 )){
-          return res.status(400).json({
-            error: 'One of the images is too big!'
-          })
-        }
         const photoBuffer = {
           data: fs.readFileSync(photo.filepath),
           contentType: photo.mimetype,
@@ -45,7 +40,7 @@ exports.createProduct = (req, res) => {
       category: Joi.string().required(),
       Surface: Joi.required(),
       city: Joi.string().allow(),
-      sellorrent: Joi.required()
+      sellorrent: Joi.boolean().default(false)
     }) 
 
     const{error} = schema.validate(fields);
@@ -287,15 +282,20 @@ exports.allProducts = (req, res) => {
               }
       
 
-              exports.photoProduct = (req , res) => {
+              exports.photoProductCount = (req , res) => {
+                  return res.json({
+                    idx: req.product.photo.length
+                  })
+              }
 
-                const {data , contentType} = req.product.photo  
+              exports.photoProduct = (req , res) => {
+                const idx = req.params.idx
+                
+                if (idx >= req.product.photo.length) return res.send('image not found')
+                const {data , contentType} = req.product.photo[idx]
 
                 if(data) {
-
                   res.set('Content-Type', contentType)
-
                   return res.send(data)
-
                 }
               }
