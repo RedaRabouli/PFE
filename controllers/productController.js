@@ -181,7 +181,7 @@ exports.allProducts = (req, res) => {
   let{search, category} = req.query;
 
   if(search){
-    query.name = {  $regex: search, $options: 'i'};
+    query.description = {  $regex: search, $options: 'i'};
       }
 
   if(category) {
